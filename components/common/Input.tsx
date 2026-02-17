@@ -4,37 +4,48 @@ import React from 'react';
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
+  minVal?: number;
+  maxVal?: number;
 }
 
-export const Input: React.FC<InputProps> = ({ label, error, className, onChange, value, ...props }) => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+export const Input: React.FC<InputProps> = ({ label, error, minVal, maxVal, className, onChange, value, onBlur, ...props }) => {
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value;
-    // Strip leading zeros for numeric inputs if not just "0"
-    if (props.type === 'number' && val.length > 1) {
-      val = val.replace(/^0+/, '');
-      if (val === '') val = '0';
+
+    // Remove non-numeric if type is number
+    if (props.type === 'number') {
+      val = val.replace(/[^0-9]/g, '');
+      // Strip leading zeros
+      if (val.length > 1) {
+        val = val.replace(/^0+/, '');
+      }
+      if (val === '') val = '';
     }
     
-    // Create a synthesized event or just call onChange with modified target
     if (onChange) {
-      const event = {
+      const syntheticEvent = {
         ...e,
         target: { ...e.target, value: val }
       } as React.ChangeEvent<HTMLInputElement>;
-      onChange(event);
+      onChange(syntheticEvent);
     }
   };
 
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (onBlur) onBlur(e);
+  };
+
   return (
-    <div className="flex flex-col gap-1 w-full">
-      {label && <label className="text-sm font-medium text-slate-600">{label}</label>}
+    <div className="flex flex-col gap-1.5 w-full">
+      {label && <label className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">{label}</label>}
       <input
         {...props}
         value={value}
-        onChange={handleChange}
-        className={`px-4 py-3 rounded-xl bg-white border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-slate-800 ${className} ${error ? 'border-red-500' : ''}`}
+        onChange={handleInput}
+        onBlur={handleBlur}
+        className={`px-5 py-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border-2 transition-all text-sm font-bold text-slate-800 dark:text-slate-100 placeholder:text-slate-300 dark:placeholder:text-slate-700 ${error ? 'border-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.1)]' : 'border-transparent focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-800 focus:ring-4 focus:ring-indigo-500/5'} ${className}`}
       />
-      {error && <span className="text-xs text-red-500">{error}</span>}
+      {error && <span className="text-[10px] font-bold text-rose-500 mt-1 uppercase tracking-wider">{error}</span>}
     </div>
   );
 };

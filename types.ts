@@ -18,6 +18,15 @@ export enum Pace {
 
 export type Theme = 'light' | 'dark';
 
+export interface OnboardingAnswers {
+  jobType: 'desk' | 'standing' | 'walking' | 'physical';
+  commute: 'car' | 'public' | 'walk_bike';
+  exerciseDays: number;
+  workoutDuration: number;
+  weekendActivity: 'low' | 'moderate' | 'high';
+  manualSteps?: number;
+}
+
 export interface UserProfile {
   age: number;
   gender: Gender;
@@ -31,6 +40,7 @@ export interface UserProfile {
   targetWaterMl: number;
   targetSteps: number;
   onboardingComplete: boolean;
+  onboardingAnswers?: OnboardingAnswers;
   theme?: Theme;
 }
 
@@ -51,6 +61,11 @@ export interface LoggedFood {
   grams: number;
   mealType: 'Breakfast' | 'Lunch' | 'Dinner' | 'Snack';
   timestamp: number;
+  refinement?: {
+    fatType?: string;
+    portionSize?: string;
+    origin?: string;
+  };
 }
 
 export interface WaterEvent {
@@ -76,13 +91,15 @@ export interface ExerciseEntry {
 }
 
 export interface WorkoutPlan {
-  [day: string]: ExerciseEntry[]; // "Monday", "Tuesday", etc.
+  [day: string]: ExerciseEntry[];
 }
 
 export interface CheckIn {
   date: string;
   weight: number;
   adherence: number; // 1-10
+  stressLevel: number; // 1-5
+  sleepQuality: number; // 1-5
   adjustment: number; // kcal adjustment recommendation
 }
 
