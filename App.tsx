@@ -9,7 +9,7 @@ import { FitnessPlanner } from './components/FitnessPlanner';
 import { CheckIn } from './components/CheckIn';
 import { MetabolicLab } from './components/MetabolicLab';
 import { PlateScanner } from './components/PlateScanner';
-import { LayoutDashboard, TrendingUp, Dumbbell, UserCheck, Settings, Moon, Sun, FlaskConical, Camera } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, Dumbbell, UserCheck, Settings, Moon, Sun, Camera } from 'lucide-react';
 
 const App: React.FC = () => {
   const [state, setState] = useState<AppState>(loadState());
@@ -60,7 +60,6 @@ const App: React.FC = () => {
     window.location.hash = '#/';
   };
 
-  // Fix: Declare toggleTheme function
   const toggleTheme = () => {
     if (state.profile) {
       const newTheme: Theme = state.profile.theme === 'dark' ? 'light' : 'dark';
@@ -82,7 +81,7 @@ const App: React.FC = () => {
           <button onClick={toggleTheme} className="p-2 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-indigo-500 transition-all">
             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </button>
-          <button onClick={() => setShowSettings(!showSettings)} className={`p-2 rounded-xl transition-all ${showSettings ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/20' : 'bg-slate-50 dark:bg-slate-800 text-slate-500'}`}>
+          <button onClick={() => setShowSettings(!showSettings)} className={`p-2 rounded-xl transition-all ${showSettings ? 'bg-indigo-600 text-white shadow-lg' : 'bg-slate-50 dark:bg-slate-800 text-slate-500'}`}>
             <Settings size={20} />
           </button>
         </div>

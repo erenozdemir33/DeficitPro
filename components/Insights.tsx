@@ -2,7 +2,7 @@
 import React, { useState, useMemo } from 'react';
 import { AppState } from '../types';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Cell, AreaChart, Area, PieChart, Pie } from 'recharts';
-import { TrendingUp, Award, Zap, Activity, Target, Droplets, Compass, BarChart3, Info, Sparkles, TrendingDown } from 'lucide-react';
+import { TrendingUp, Award, Zap, Activity, Target, Compass, Sparkles, Droplets } from 'lucide-react';
 
 interface InsightsProps {
   state: AppState;
@@ -13,7 +13,6 @@ export const Insights: React.FC<InsightsProps> = ({ state }) => {
   const isDark = document.documentElement.classList.contains('dark');
 
   const chartData = useMemo(() => {
-    const dates = Object.keys(state.logs).sort();
     let limit = 7;
     if (timeframe === '1m') limit = 30;
     if (timeframe === '1y') limit = 365;
@@ -29,14 +28,12 @@ export const Insights: React.FC<InsightsProps> = ({ state }) => {
       const target = state.profile?.targetKcal || 2000;
       const water = log?.water.reduce((s, w) => s + w.amount, 0) || 0;
       const steps = log?.steps || 0;
-      const diff = intake > 0 ? intake - target : 0;
       
       fullData.push({
         date: timeframe === '7d' ? d.toLocaleDateString('en-US', { weekday: 'short' }) : dateStr.slice(5),
         fullDate: dateStr,
         intake,
         target,
-        diff,
         water,
         steps,
         rollingAvg: 0
@@ -81,27 +78,26 @@ export const Insights: React.FC<InsightsProps> = ({ state }) => {
   }, [state.profile]);
 
   const writtenInsights = useMemo(() => {
-    if (!state.profile || !stats) return [{ title: 'Analyzing Data...', text: 'Log consistently for 3 days to unlock deep insights.', color: 'text-slate-400', bg: 'bg-slate-50 dark:bg-slate-900' }];
+    if (!state.profile || !stats) return [{ title: 'Collecting Data', text: 'Log for 3+ days to unlock metabolic forecasting.', color: 'text-slate-400', bg: 'bg-slate-50 dark:bg-slate-900' }];
     
     const insights = [];
     if (stats.consistencyScore >= 80) {
-      insights.push({ title: 'Elite Consistency', text: 'Your intake stability is exceptional. This level of adherence ensures predictable weight delta.', type: 'win', color: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-950/20' });
+      insights.push({ title: 'Elite Adherence', text: 'Your intake stability is exceptional. Reliable data yields reliable results.', color: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-950/20' });
     } else if (stats.consistencyScore < 50) {
-      insights.push({ title: 'Metabolic Headroom', text: 'Inconsistent logs make forecasting difficult. Aim for a 3-day tracking streak to recalibrate.', type: 'alert', color: 'text-amber-500', bg: 'bg-amber-50 dark:bg-amber-950/20' });
+      insights.push({ title: 'Tracking Gaps', text: 'Intake variance is high. Try pre-logging meals to stabilize your metabolic flow.', color: 'text-amber-500', bg: 'bg-amber-50 dark:bg-amber-950/20' });
     }
 
     if (stats.avgSteps < state.profile.targetSteps * 0.7) {
-      insights.push({ title: 'Movement Gap', text: `You're missing ~${Math.round(state.profile.targetSteps - stats.avgSteps)} steps daily. This reduces your burn by ~${Math.round((state.profile.targetSteps - stats.avgSteps) * 0.05)}kcal.`, type: 'fit', color: 'text-indigo-500', bg: 'bg-indigo-50 dark:bg-indigo-950/20' });
+      insights.push({ title: 'Activity Alert', text: `Daily movement is ~${Math.round(state.profile.targetSteps - stats.avgSteps)} steps below baseline.`, color: 'text-indigo-500', bg: 'bg-indigo-50 dark:bg-indigo-950/20' });
     }
 
-    insights.push({ title: 'Energy Projection', text: `Current trajectory indicates ~${stats.estFatLoss}kg of total fat loss over the last ${stats.totalDays} days.`, type: 'stat', color: 'text-sky-500', bg: 'bg-sky-50 dark:bg-sky-950/20' });
+    insights.push({ title: 'Energy Forecast', text: `Trajectory indicates ~${stats.estFatLoss}kg of total fat loss over the last ${stats.totalDays} days.`, color: 'text-sky-500', bg: 'bg-sky-50 dark:bg-sky-950/20' });
 
     return insights;
   }, [stats, state.profile]);
 
   return (
     <div className="p-6 space-y-10 pb-32 max-w-lg mx-auto animate-in fade-in duration-700">
-      {/* Timeframe Switcher */}
       <div className="bg-white dark:bg-slate-900 p-2 rounded-[32px] shadow-sm border dark:border-slate-800 mt-6 flex gap-2">
         {(['7d', '1m', '1y'] as const).map(t => (
           <button key={t} onClick={() => setTimeframe(t)} className={`flex-1 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${timeframe === t ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-500/20' : 'text-slate-400 hover:text-indigo-500'}`}>
@@ -110,7 +106,6 @@ export const Insights: React.FC<InsightsProps> = ({ state }) => {
         ))}
       </div>
 
-      {/* KPI Cards */}
       <div className="grid grid-cols-2 gap-4">
         <div className="bg-white dark:bg-slate-900 p-8 rounded-[44px] shadow-sm border border-slate-100 dark:border-slate-800">
           <div className="flex items-center gap-2 mb-3">
@@ -132,11 +127,10 @@ export const Insights: React.FC<InsightsProps> = ({ state }) => {
         </div>
       </div>
 
-      {/* Energy Flow Area Chart */}
       <div className="bg-white dark:bg-slate-900 p-10 rounded-[56px] shadow-sm border border-slate-100 dark:border-slate-800 space-y-8">
         <div className="flex justify-between items-center">
           <div className="space-y-1">
-            <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Metabolic Energy Flux</h3>
+            <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Energy Balance</h3>
             <div className="flex gap-4">
               <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-indigo-500" /><span className="text-[9px] font-black text-slate-400 uppercase">Intake</span></div>
               <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-slate-300" /><span className="text-[9px] font-black text-slate-400 uppercase">Avg</span></div>
@@ -166,15 +160,12 @@ export const Insights: React.FC<InsightsProps> = ({ state }) => {
         </div>
       </div>
 
-      {/* Sub Charts Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Macro Proxy */}
         <div className="bg-white dark:bg-slate-900 p-10 rounded-[56px] shadow-sm border border-slate-100 dark:border-slate-800 space-y-6">
-          <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Macro Distribution Proxy</h3>
+          <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Macro Proxy</h3>
           <div className="h-48 w-full flex items-center justify-center relative">
              <ResponsiveContainer width="100%" height="100%">
                <PieChart>
-                 {/* Fix: Moved cornerRadius={10} from Cell to Pie component */}
                  <Pie data={macroProxyData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={45} outerRadius={65} paddingAngle={8} cornerRadius={10}>
                    {macroProxyData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.fill} />)}
                  </Pie>
@@ -183,7 +174,7 @@ export const Insights: React.FC<InsightsProps> = ({ state }) => {
              </ResponsiveContainer>
              <div className="absolute flex flex-col items-center">
                 <Sparkles size={16} className="text-indigo-500 mb-1" />
-                <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Balance</span>
+                <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Targets</span>
              </div>
           </div>
           <div className="flex justify-center gap-5">
@@ -196,9 +187,8 @@ export const Insights: React.FC<InsightsProps> = ({ state }) => {
           </div>
         </div>
 
-        {/* Hydration Trends */}
         <div className="bg-white dark:bg-slate-900 p-10 rounded-[56px] shadow-sm border border-slate-100 dark:border-slate-800 space-y-6">
-          <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Hydration VS Goal</h3>
+          <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Water Trends</h3>
           <div className="h-48 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData}>
@@ -213,7 +203,6 @@ export const Insights: React.FC<InsightsProps> = ({ state }) => {
         </div>
       </div>
 
-      {/* Actionable Insights */}
       <div className="space-y-5">
         <div className="flex items-center gap-3 px-3">
           <Zap size={18} className="text-indigo-600" />
@@ -221,7 +210,7 @@ export const Insights: React.FC<InsightsProps> = ({ state }) => {
         </div>
         <div className="space-y-4">
           {writtenInsights.map((insight, idx) => (
-            <div key={idx} className={`${insight.bg} p-8 rounded-[44px] border border-white dark:border-slate-800 shadow-sm flex gap-6 items-center transition-all hover:scale-[1.02] cursor-default`}>
+            <div key={idx} className={`${insight.bg} p-8 rounded-[44px] border border-white dark:border-slate-800 shadow-sm flex gap-6 items-center transition-all hover:scale-[1.02]`}>
               <div className={`p-4 rounded-[24px] bg-white dark:bg-slate-900 shadow-sm ${insight.color}`}>
                 <Compass size={24} />
               </div>

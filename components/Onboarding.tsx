@@ -33,8 +33,10 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
 
   const validateStep = () => {
     const newErrors: Record<string, string> = {};
-    if (step === 2) {
+    if (step === 1) {
       if (!data.age || data.age < 10 || data.age > 90) newErrors.age = "10 - 90 only";
+    }
+    if (step === 2) {
       if (!data.heightCm || data.heightCm < 120 || data.heightCm > 220) newErrors.heightCm = "120 - 220 cm";
       if (!data.weightKg || data.weightKg < 35 || data.weightKg > 200) newErrors.weightKg = "35 - 200 kg";
     }
@@ -96,10 +98,7 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4">
       <div className="bg-white dark:bg-slate-900 rounded-[48px] shadow-2xl w-full max-w-lg overflow-hidden relative border border-white dark:border-slate-800 transition-all">
         <div className="h-1.5 bg-slate-100 dark:bg-slate-800 w-full absolute top-0">
-          <div 
-            className="h-full bg-indigo-500 transition-all duration-700 ease-out" 
-            style={{ width: `${(step / 6) * 100}%` }}
-          />
+          <div className="h-full bg-indigo-500 transition-all duration-700 ease-out" style={{ width: `${(step / 6) * 100}%` }} />
         </div>
 
         <div className="p-8 pt-12 md:p-10 md:pt-16">
@@ -111,22 +110,22 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
               <div className="space-y-4">
                 <h2 className="text-4xl font-black text-slate-800 dark:text-white leading-tight">Master Your Deficit</h2>
                 <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed px-4">
-                  We translate your unique biology and lifestyle into a precise roadmap for sustainable fat loss.
+                  We translate your biology and lifestyle into a precise roadmap for sustainable fat loss and high-performance tracking.
                 </p>
               </div>
               <div className="space-y-4 pt-4">
                  <div className="flex items-center gap-4 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-3xl text-left border border-slate-100 dark:border-slate-800">
                     <div className="p-3 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 rounded-2xl"><Flame size={20} /></div>
                     <div>
-                      <h4 className="text-xs font-black uppercase text-slate-800 dark:text-white">Metabolic Engine</h4>
-                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight mt-0.5">Calculating BMR & Active TDEE.</p>
+                      <h4 className="text-xs font-black uppercase text-slate-800 dark:text-white">Energy Flow</h4>
+                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight mt-0.5">Calculated BMR & Active TDEE.</p>
                     </div>
                  </div>
                  <div className="flex items-center gap-4 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-3xl text-left border border-slate-100 dark:border-slate-800">
                     <div className="p-3 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 rounded-2xl"><Zap size={20} /></div>
                     <div>
-                      <h4 className="text-xs font-black uppercase text-slate-800 dark:text-white">Smart Navigation</h4>
-                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight mt-0.5">Adjusting targets as you progress.</p>
+                      <h4 className="text-xs font-black uppercase text-slate-800 dark:text-white">Smart Adjustment</h4>
+                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight mt-0.5">Weekly calibration to prevent plateaus.</p>
                     </div>
                  </div>
               </div>
@@ -138,10 +137,9 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
                <div className="flex flex-col items-center gap-4">
                 <div className="p-4 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-500 rounded-3xl"><User size={32} /></div>
                 <h2 className="text-3xl font-black text-slate-800 dark:text-white tracking-tight">Biology</h2>
-                <p className="text-center text-sm font-bold text-slate-500 px-6">Age and gender are the primary variables in the Mifflin-St Jeor metabolic equation.</p>
               </div>
               
-              <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl shadow-inner">
+              <div className="flex bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl">
                 {Object.values(Gender).map(g => (
                   <button 
                     key={g}
@@ -161,8 +159,7 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
             <div className="space-y-10 animate-in fade-in slide-in-from-right-4 duration-500">
               <div className="flex flex-col items-center gap-4 text-center">
                 <div className="p-4 bg-sky-50 dark:bg-sky-950/40 text-sky-500 rounded-3xl"><Scale size={32} /></div>
-                <h2 className="text-3xl font-black text-slate-800 dark:text-white tracking-tight">Body Composition</h2>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Calculates your BMI Category</p>
+                <h2 className="text-3xl font-black text-slate-800 dark:text-white tracking-tight">Metrics</h2>
               </div>
 
               <div className="grid gap-6">
@@ -181,12 +178,6 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
                       {bmiCat}
                     </div>
                   </div>
-                  {bmi >= 30 && (
-                    <div className="flex gap-4 p-4 bg-white/10 rounded-3xl items-start">
-                      <ShieldAlert className="text-amber-400 shrink-0" size={20} />
-                      <p className="text-[10px] font-bold leading-relaxed uppercase">Clinical Note: BMI ≥ 30 indicates metabolic strain. We suggest the 'Relaxed' pace for cardiac safety.</p>
-                    </div>
-                  )}
                 </div>
               )}
             </div>
@@ -196,39 +187,38 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
             <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
               <div className="flex flex-col items-center gap-4">
                 <div className="p-4 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-500 rounded-3xl"><Activity size={32} /></div>
-                <h2 className="text-3xl font-black text-slate-800 dark:text-white tracking-tight">Active Expenditure</h2>
-                <p className="text-xs font-bold text-slate-400 uppercase text-center tracking-widest px-8">Every movement burns energy. Let's map your week.</p>
+                <h2 className="text-3xl font-black text-slate-800 dark:text-white tracking-tight">Lifestyle</h2>
               </div>
 
               <div className="space-y-6 max-h-[40vh] overflow-y-auto pr-2 no-scrollbar">
                 <div className="space-y-3">
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Occupational Load</p>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Job Type</p>
                   <div className="grid grid-cols-2 gap-2">
                     {['desk', 'standing', 'walking', 'physical'].map(type => (
                       <button 
                         key={type}
                         onClick={() => setData({...data, jobType: type as any})}
-                        className={`p-4 rounded-[24px] border-2 text-[10px] font-black uppercase transition-all ${data.jobType === type ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300' : 'border-slate-100 dark:border-slate-800 text-slate-400 dark:text-slate-600'}`}
+                        className={`p-4 rounded-[24px] border-2 text-[10px] font-black uppercase transition-all ${data.jobType === type ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700' : 'border-slate-100 dark:border-slate-800 text-slate-400'}`}
                       >{type}</button>
                     ))}
                   </div>
                 </div>
 
                 <div className="space-y-3">
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Commute Method</p>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Commute</p>
                   <div className="grid grid-cols-3 gap-2">
                     {['car', 'public', 'walk_bike'].map(c => (
                       <button 
                         key={c}
                         onClick={() => setData({...data, commute: c as any})}
-                        className={`flex-1 p-3 rounded-2xl border-2 text-[10px] font-black uppercase transition-all ${data.commute === c ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300' : 'border-slate-100 dark:border-slate-800 text-slate-400'}`}
+                        className={`flex-1 p-3 rounded-2xl border-2 text-[10px] font-black uppercase transition-all ${data.commute === c ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700' : 'border-slate-100 dark:border-slate-800 text-slate-400'}`}
                       >{c.replace('_', ' & ')}</button>
                     ))}
                   </div>
                 </div>
 
                 <div className="space-y-3">
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Training Days / Week</p>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Workouts / Week</p>
                   <div className="flex justify-between gap-1">
                     {[0, 1, 2, 3, 4, 5, 6, 7].map(d => (
                       <button 
@@ -255,27 +245,21 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
                   <button 
                     key={g}
                     onClick={() => setData({...data, goal: g})}
-                    className={`py-5 rounded-[24px] text-[10px] font-black transition-all uppercase tracking-widest ${data.goal === g ? 'bg-rose-500 text-white shadow-xl scale-105' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}`}
+                    className={`py-5 rounded-[24px] text-[10px] font-black transition-all uppercase tracking-widest ${data.goal === g ? 'bg-rose-500 text-white shadow-xl' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}`}
                   >{g}</button>
                 ))}
               </div>
 
               <div className="space-y-6">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Sustainability Protocol</p>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Fat Loss Protocol</p>
                 <div className="flex gap-2">
                   {[Pace.RELAXED, Pace.NORMAL, Pace.AGGRESSIVE].map(p => (
                     <button 
                       key={p}
                       onClick={() => setData({...data, pace: p})}
-                      className={`flex-1 p-5 rounded-[24px] border-2 text-[10px] font-black uppercase transition-all ${data.pace === p ? 'border-rose-500 bg-rose-50 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300 shadow-xl' : 'border-slate-100 dark:border-slate-800 text-slate-400'}`}
+                      className={`flex-1 p-5 rounded-[24px] border-2 text-[10px] font-black uppercase transition-all ${data.pace === p ? 'border-rose-500 bg-rose-50 dark:bg-rose-900/30 text-rose-700 shadow-xl' : 'border-slate-100 dark:border-slate-800 text-slate-400'}`}
                     >{p}</button>
                   ))}
-                </div>
-                <div className="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-[32px] space-y-2 border border-slate-100 dark:border-slate-800">
-                   <div className="flex items-center gap-2 text-rose-600"><Flame size={14}/><span className="text-[9px] font-black uppercase">Plan Projection</span></div>
-                   <p className="text-[10px] font-bold text-slate-500 leading-relaxed uppercase tracking-tight">
-                     Based on {data.pace} pace, we expect a weekly weight delta of ±{data.pace === Pace.RELAXED ? '0.3' : data.pace === Pace.NORMAL ? '0.6' : '1.0'}kg.
-                   </p>
                 </div>
               </div>
             </div>
@@ -285,15 +269,12 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
             <div className="space-y-10 animate-in fade-in zoom-in duration-500">
               <div className="text-center space-y-2">
                 <h2 className="text-4xl font-black text-slate-800 dark:text-white tracking-tight">Plan Summary</h2>
-                <div className="text-[10px] font-black text-indigo-500 uppercase tracking-[0.3em] flex items-center justify-center gap-2">
-                   <ShieldAlert size={12}/> Verified Protocol
-                </div>
               </div>
 
               <div className="space-y-4">
-                <div className="p-8 bg-indigo-600 rounded-[44px] text-white shadow-2xl shadow-indigo-500/30 flex justify-between items-center">
+                <div className="p-8 bg-indigo-600 rounded-[44px] text-white shadow-2xl flex justify-between items-center">
                   <div className="space-y-1">
-                    <h4 className="text-[10px] font-black uppercase tracking-[0.2em] opacity-70">Daily Energy Budget</h4>
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.2em] opacity-70">Energy Budget</h4>
                     <div className="text-5xl font-black">{plan.targetKcal}</div>
                     <div className="text-[10px] font-black uppercase opacity-70">Calories / Day</div>
                   </div>
@@ -313,7 +294,7 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
               </div>
 
               <div className="p-8 bg-slate-900 rounded-[44px] space-y-6">
-                 <div className="flex justify-between items-center"><h4 className="text-[10px] font-black uppercase text-indigo-400 tracking-[0.2em]">Macro Distribution</h4><Info size={14} className="text-slate-600"/></div>
+                 <div className="flex justify-between items-center"><h4 className="text-[10px] font-black uppercase text-indigo-400 tracking-[0.2em]">Macro Protocol</h4><Info size={14} className="text-slate-600"/></div>
                  <div className="grid grid-cols-3 gap-6">
                     <div className="space-y-1">
                       <div className="text-xl font-black text-white">{plan.macros.protein}g</div>
@@ -329,25 +310,18 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
                     </div>
                  </div>
               </div>
-
-              <div className="p-6 bg-amber-50 dark:bg-amber-950/20 rounded-[32px] border border-amber-100 dark:border-amber-900/40 flex gap-4 items-start">
-                 <ShieldAlert className="text-amber-500 shrink-0 mt-0.5" size={20} />
-                 <p className="text-[10px] font-bold text-amber-800 dark:text-amber-400 leading-relaxed uppercase tracking-tight">
-                   Important: If you experience persistent fatigue or dizziness, increase intake immediately. Not for individuals under 18 or those with eating disorders.
-                 </p>
-              </div>
             </div>
           )}
 
           <div className="mt-12 flex gap-4">
             {step > 0 && (
-              <button onClick={prevStep} className="p-6 rounded-[28px] bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:scale-105 active:scale-95 transition-all"><ChevronLeft size={28} /></button>
+              <button onClick={prevStep} className="p-6 rounded-[28px] bg-slate-100 dark:bg-slate-800 text-slate-500 hover:scale-105 transition-all"><ChevronLeft size={28} /></button>
             )}
             <button 
               onClick={step === 5 ? handleSubmit : nextStep}
-              className="flex-1 bg-indigo-600 text-white p-6 rounded-[28px] font-black flex items-center justify-center gap-4 hover:scale-[1.02] active:scale-95 transition-all shadow-2xl shadow-indigo-500/30 uppercase tracking-[0.3em] text-xs"
+              className="flex-1 bg-indigo-600 text-white p-6 rounded-[28px] font-black flex items-center justify-center gap-4 hover:scale-[1.02] active:scale-95 transition-all shadow-2xl uppercase tracking-[0.3em] text-xs"
             >
-              {step === 5 ? <>Activate My Plan <Check size={20} /></> : <>Continue <ChevronRight size={20} /></>}
+              {step === 5 ? <>Activate Plan <Check size={20} /></> : <>Continue <ChevronRight size={20} /></>}
             </button>
           </div>
         </div>
