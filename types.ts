@@ -18,6 +18,12 @@ export enum Pace {
 
 export type Theme = 'light' | 'dark';
 
+export interface MacroTargets {
+  protein: number;
+  carbs: number;
+  fat: number;
+}
+
 export interface OnboardingAnswers {
   jobType: 'desk' | 'standing' | 'walking' | 'physical';
   commute: 'car' | 'public' | 'walk_bike';
@@ -32,6 +38,8 @@ export interface UserProfile {
   gender: Gender;
   heightCm: number;
   weightKg: number;
+  bmi: number;
+  bmiCategory: string;
   activityMultiplier: number;
   baselineSteps: number;
   goal: Goal;
@@ -39,6 +47,7 @@ export interface UserProfile {
   targetKcal: number;
   targetWaterMl: number;
   targetSteps: number;
+  macroTargets: MacroTargets;
   onboardingComplete: boolean;
   onboardingAnswers?: OnboardingAnswers;
   theme?: Theme;
