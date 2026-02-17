@@ -52,15 +52,17 @@ export const FitnessPlanner: React.FC<FitnessPlannerProps> = ({ plan, onUpdate }
         </div>
       </div>
 
+      {/* FIXED TAB BAR */}
       <div className="bg-white dark:bg-slate-900 p-2 rounded-[28px] border dark:border-slate-800 shadow-sm relative overflow-hidden">
         <div className="flex overflow-x-auto no-scrollbar gap-2 px-1 py-1 snap-x scroll-smooth">
           {DAYS_OF_WEEK.map(day => (
             <button
               key={day}
               onClick={() => setActiveDay(day)}
-              className={`px-8 py-3.5 rounded-[22px] text-[10px] font-black uppercase tracking-widest transition-all flex-shrink-0 snap-center min-w-[100px] border-2 ${activeDay === day ? 'bg-indigo-600 border-indigo-600 text-white shadow-xl shadow-indigo-500/20' : 'bg-transparent border-transparent text-slate-400 dark:text-slate-600 hover:text-indigo-400'}`}
+              className={`px-8 py-4 rounded-[22px] text-[10px] font-black uppercase tracking-[0.2em] transition-all flex-shrink-0 snap-center min-w-[110px] border-2 flex flex-col items-center gap-1 ${activeDay === day ? 'bg-indigo-600 border-indigo-600 text-white shadow-xl shadow-indigo-500/20' : 'bg-transparent border-transparent text-slate-400 dark:text-slate-600 hover:text-indigo-400'}`}
             >
-              {day.substring(0, 3)}
+              <span className="opacity-60 text-[8px]">{day.substring(0, 3)}</span>
+              <span>{day}</span>
             </button>
           ))}
         </div>

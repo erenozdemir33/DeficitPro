@@ -112,6 +112,14 @@ export interface CheckIn {
   adjustment: number; // kcal adjustment recommendation
 }
 
+export interface AIScanResult {
+  dishName: string;
+  estimatedGrams: number;
+  estimatedKcal: number;
+  confidence: number;
+  ingredients: string[];
+}
+
 export interface AppState {
   profile: UserProfile | null;
   logs: Record<string, DailyLog>;
