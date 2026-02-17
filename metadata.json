@@ -1,0 +1,7 @@
+{
+  "name": "DeficitPro",
+  "description": "An offline-first, Turkish-focused calorie, steps, and water tracker with adaptive progress calibration and a weekly fitness planner.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
